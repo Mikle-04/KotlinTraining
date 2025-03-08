@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kotlintraining.data.dao.AppDao
-import com.example.kotlintraining.data.db.Question
+import com.example.kotlintraining.data.db.dao.AppDao
+import com.example.kotlintraining.data.db.models.Question
 import kotlinx.coroutines.launch
 
 class TestViewModel(private val dao: AppDao) : ViewModel() {

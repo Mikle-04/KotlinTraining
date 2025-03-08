@@ -1,11 +1,11 @@
-package com.example.kotlintraining.data.dao
+package com.example.kotlintraining.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.kotlintraining.data.db.Question
-import com.example.kotlintraining.data.db.Theory
+import com.example.kotlintraining.data.db.models.Question
+import com.example.kotlintraining.data.db.models.Theory
 
 @Dao
 interface AppDao {
