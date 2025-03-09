@@ -21,13 +21,13 @@ import com.example.kotlintraining.data.db.AppDatabase
 import com.example.kotlintraining.data.db.models.Theory
 
 @Composable
-fun TheoryScreen() {
+fun TheoryScreen(category: String) {
     val context = LocalContext.current
     val db = Room.databaseBuilder(context, AppDatabase::class.java, "app_db").build()
     var theoryList by remember { mutableStateOf(listOf<Theory>()) }
 
-    LaunchedEffect(Unit) {
-        theoryList = db.appDao().getTheoryByCategory("Основы")
+    LaunchedEffect(category) {
+        theoryList = db.appDao().getTheoryByCategory(category)
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {

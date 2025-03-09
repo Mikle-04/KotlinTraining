@@ -28,7 +28,9 @@ import androidx.room.Room
 import com.example.kotlintraining.data.db.AppDatabase
 import com.example.kotlintraining.data.db.populateDatabase
 import com.example.kotlintraining.ui.TestScreen
+import com.example.kotlintraining.ui.TestSelectionScreen
 import com.example.kotlintraining.ui.TheoryScreen
+import com.example.kotlintraining.ui.TheorySelectionScreen
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController() // Навигация между экранами
+    val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
@@ -62,17 +64,25 @@ fun MainScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Button(onClick = { navController.navigate("theory") }) {
-                    Text("Изучить теорию")
+                Button(onClick = { navController.navigate("theory_selection") }) {
+                    Text("Теория")
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { navController.navigate("test") }) {
-                    Text("Пройти тест")
+                Button(onClick = { navController.navigate("test_selection") }) {
+                    Text("Тест")
                 }
             }
         }
-        composable("theory") { TheoryScreen() }
-        composable("test") { TestScreen() }
+        composable("theory_selection") { TheorySelectionScreen(navController) }
+        composable("test_selection") { TestSelectionScreen(navController) }
+        composable("theory/{category}") { backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category") ?: "Основы"
+            TheoryScreen(category)
+        }
+        composable("test/{category}") { backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category") ?: "Основы"
+            TestScreen(category)
+        }
     }
 }
 

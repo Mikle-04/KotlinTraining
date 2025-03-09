@@ -9,6 +9,9 @@ import com.example.kotlintraining.data.db.models.Theory
 
 @Dao
 interface AppDao {
+    @Query("SELECT * FROM question WHERE category = :category ORDER BY RANDOM() LIMIT 30")
+    suspend fun getRandomQuestionsByCategory(category: String): List<Question>
+
     @Query("SELECT * FROM question ORDER BY RANDOM() LIMIT 30")
     suspend fun getRandomQuestions(): List<Question>
 

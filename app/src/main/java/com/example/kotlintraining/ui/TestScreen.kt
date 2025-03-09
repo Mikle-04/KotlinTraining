@@ -28,10 +28,10 @@ import com.example.kotlintraining.presentation.TestViewModel
 import com.example.kotlintraining.presentation.TestViewModelFactory
 
 @Composable
-fun TestScreen() {
+fun TestScreen(category: String) {
     val context = LocalContext.current
     val db = Room.databaseBuilder(context, AppDatabase::class.java, "app_db").build()
-    val viewModel: TestViewModel = viewModel(factory = TestViewModelFactory(db.appDao()))
+    val viewModel: TestViewModel = viewModel(factory = TestViewModelFactory(db.appDao(), category))
     val questions by viewModel.questions.observeAsState(emptyList())
     val score by viewModel.score.observeAsState(null)
     var currentQuestionIndex by remember { mutableStateOf(0) }
