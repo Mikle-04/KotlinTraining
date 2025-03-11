@@ -37,7 +37,11 @@ fun TestScreen(category: String) {
     var currentQuestionIndex by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf<Int?>(null) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 50.dp, start = 16.dp, end = 16.dp)
+    ) {
         if (score != null) {
             Text("Ваш результат: $score/5", style = MaterialTheme.typography.bodyMedium)
         } else if (questions.isNotEmpty()) {
