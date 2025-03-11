@@ -30,12 +30,20 @@ import com.example.kotlintraining.data.db.models.Theory
 fun TheoryScreen(category: String) {
     val context = LocalContext.current
     val db = Room.databaseBuilder(context, AppDatabase::class.java, "app_db").build()
-    var theoryList by remember { mutableStateOf(listOf<Theory>()) }
+    // Список уникальных перемешанных тем
+    val theoryListState = remember { mutableStateOf(listOf<Theory>()) }
     var currentTheoryIndex by remember { mutableStateOf(0) }
 
+    // Загружаем данные один раз при смене категории
     LaunchedEffect(category) {
-        theoryList = db.appDao().getTheoryByCategory(category)
+        val theories = db.appDao().getTheoryByCategory(category)
+            .distinctBy { it.title + it.content } // Уникальность по заголовку и содержимому
+            .shuffled() // Случайный порядок
+        theoryListState.value = theories
+        currentTheoryIndex = 0 // Сбрасываем индекс при новой категории
     }
+
+    val theoryList = theoryListState.value
 
     if (theoryList.isNotEmpty() && currentTheoryIndex < theoryList.size) {
         val currentTheory = theoryList[currentTheoryIndex]
@@ -43,7 +51,7 @@ fun TheoryScreen(category: String) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 20.dp, start = 8.dp, end = 8.dp) // Отступ сверху 20dp, по бокам 8dp
+                .padding(top = 20.dp, start = 8.dp, end = 8.dp)
         ) {
             // Заголовок жирным шрифтом
             Text(
@@ -55,16 +63,14 @@ fun TheoryScreen(category: String) {
             // Текст теории
             Text(
                 text = currentTheory.content,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    lineHeight = 28.sp // Увеличиваем межстрочный интервал для читаемости
-                ),
+                style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 28.sp),
                 modifier = Modifier
                     .padding(bottom = 8.dp)
-                    .weight(1f) // Занимает доступное пространство
+                    .weight(1f)
             )
 
             // Spacer для отступа кнопки от низа
-            Spacer(modifier = Modifier.height(30.dp)) // Отступ от низа 30dp
+            Spacer(modifier = Modifier.height(30.dp))
 
             // Кнопка "Далее"
             Button(
@@ -75,7 +81,7 @@ fun TheoryScreen(category: String) {
                 },
                 modifier = Modifier
                     .align(Alignment.End)
-                    .padding(bottom = 50.dp) // Отступ вокруг кнопки
+                    .padding(bottom = 45.dp)
             ) {
                 Text("Далее")
             }
