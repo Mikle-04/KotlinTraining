@@ -25,13 +25,17 @@ class TestViewModel(private val dao: AppDao, private val category: String) : Vie
     private fun loadQuestions() {
         viewModelScope.launch {
             val randomQuestions = dao.getRandomQuestionsByCategory(category)
+                .distinctBy { it.text } // Дополнительно убираем дубликаты по тексту
+                .take(30) // Ограничиваем до 30 вопросов
             _questions.value = randomQuestions
             userAnswers = MutableList(randomQuestions.size) { null }
+            println("Loaded ${randomQuestions.size} unique questions for category $category: ${randomQuestions.map { it.text }}")
         }
     }
 
     fun submitAnswer(questionIndex: Int, answerIndex: Int) {
         userAnswers[questionIndex] = answerIndex
+        println("Answer submitted for question $questionIndex: $answerIndex")
     }
 
     fun calculateScore() {
@@ -47,6 +51,7 @@ class TestViewModel(private val dao: AppDao, private val category: String) : Vie
             else -> 5
         }
         _score.value = score
+        println("Score calculated: $score")
     }
 }
 
