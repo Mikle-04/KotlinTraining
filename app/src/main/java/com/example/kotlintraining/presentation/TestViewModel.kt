@@ -25,11 +25,9 @@ class TestViewModel(private val dao: AppDao, private val category: String) : Vie
     private fun loadQuestions() {
         viewModelScope.launch {
             val randomQuestions = dao.getRandomQuestionsByCategory(category)
-                .distinctBy { it.text } // Дополнительно убираем дубликаты по тексту
-                .take(30) // Ограничиваем до 30 вопросов
             _questions.value = randomQuestions
             userAnswers = MutableList(randomQuestions.size) { null }
-            println("Loaded ${randomQuestions.size} unique questions for category $category: ${randomQuestions.map { it.text }}")
+            println("Loaded ${randomQuestions.size} questions for category $category: ${randomQuestions.map { it.text }}")
         }
     }
 
