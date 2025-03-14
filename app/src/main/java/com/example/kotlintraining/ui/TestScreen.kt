@@ -52,9 +52,9 @@ fun TestScreen(category: String) {
     ) {
         if (score != null) {
             Text(
-                text = "Ваш результат: $score/5",
+                text = "Оценка: $score/5",
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(vertical = 16.dp)
+                modifier = Modifier.padding(16.dp)
             )
         } else if (questions.isNotEmpty()) {
             val question = questions[currentQuestionIndex]
