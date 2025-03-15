@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.room.Room
 import com.example.kotlintraining.data.db.AppDatabase
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.runtime.LaunchedEffect
@@ -66,23 +67,24 @@ fun TheoryScreen(category: String) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp)
+                    .padding(bottom = 12.dp)
             )
 
-            // Контейнер с теорией
-            Box(
+            // Список с LazyColumn для теоретического текста
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .weight(1f)
+                    .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .background(Color(0xFFF5F5F5))
                     .padding(16.dp)
             ) {
-                Text(
-                    text = currentTheory.content,
-                    style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 28.sp),
-                    modifier = Modifier.fillMaxWidth()
-                )
+                item {
+                    Text(
+                        text = currentTheory.content,
+                        style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 28.sp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
